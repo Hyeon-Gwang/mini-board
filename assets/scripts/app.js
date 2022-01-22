@@ -1,4 +1,5 @@
 const $writeBtn = document.querySelector("#writeBtn");
+const $searchInput = document.querySelector('#searchInput');
 
 function getDate() {
   const today = new Date();
@@ -15,10 +16,7 @@ function getDate() {
   return parseInt(fullDate);
 };
 
-function closeModal() {
-  console.log("modal close");
-};
-
+// 포스트 작성하기
 async function writePost() {
   const title = document.querySelector("#titleInput").value;
   const content = document.querySelector("#contentInput").value;
@@ -36,10 +34,24 @@ async function writePost() {
   });
 
   if(result.data.result === "success") { 
-    closeModal();
     window.location.href = "/";
   };
   if(result.data.result === "fail") { return alert("포스트 작성에 실패하였습니다.", result.data.error); };
 };
 
 $writeBtn.addEventListener("click", writePost);
+
+
+// 포스트 수정하기
+function editPost(e) {
+  if(e.keyCode === 13) {
+    const searchType = document.querySelector('#searchType').value;
+    const searchValue = $searchInput.value;
+    
+    if(searchType === "none") { return alert('검색 타입을 선택하세요.'); };
+    if(searchValue === "") { return alert("검색 내용을 입력하세요."); };
+
+    window.location.href = `/search?type=${searchType}&value=${searchValue}`;
+  }
+}
+$searchInput.addEventListener("keyup", editPost)

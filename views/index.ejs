@@ -19,28 +19,29 @@
 </head>
 <body>
   <!-- 제목 -->
-  <h1 class="logo">Mini Board</h1>
+  <h1 class="logo"><a href="/">Mini Board</a></h1>
 
   <!-- 테이블 -->
   <div class="box board-box shadow">
     <div class="board-table">
       <div class="search-box" style="margin-bottom: 12px;">
-        <select class="form-select form-select-sm" style="width:132px; margin-right: 8px;">
-          <option selected>Select one..</option>
-          <option value="1">작성자</option>
-          <option value="2">제목</option>
-          <option value="3">작성일</option>
+        <select id="searchType" class="form-select form-select-sm" style="width:132px; margin-right: 8px;">
+          <option value="none" selected>Select one..</option>
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+          <option value="writer">작성자</option>
+          <option value="createdAt">작성일</option>
         </select>
-        <input style="width:400px" type="text" class="form-control" placeholder="search posts...">
+        <input style="width:400px" type="text" id="searchInput" class="form-control" placeholder="search posts...">
       </div>
 
       <table class="table table-hover">
         <thead class="table-light">
           <tr>
-            <td style="width: 7%">번호</td>
-            <td style="width: 53%">제목</td>
-            <td style="width: 20%">작성자</td>
-            <td style="width: 20%">작성일</td>
+            <td style="width: 10%">번호</td>
+            <td style="width: 60%">제목</td>
+            <td style="width: 15%">작성자</td>
+            <td style="width: 15%">작성일</td>
           </tr>
         </thead>
         <tbody>
@@ -54,30 +55,6 @@
               </td>
             </tr>
           <% } %>
-          <!-- <tr>
-            <td>1</td>
-            <td>샘플 게시글 1</td>
-            <td>작성자</td>
-            <td>2021-01-15</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>샘플 게시글 2</td>
-            <td>작성자</td>
-            <td>2021-01-15</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>샘플 게시글 3</td>
-            <td>작성자</td>
-            <td>2021-01-15</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>샘플 게시글 4</td>
-            <td>작성자</td>
-            <td>2021-01-15</td>
-          </tr> -->
         </tbody>
       </table>
     </div>
