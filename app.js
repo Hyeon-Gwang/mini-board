@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const ejs = require('ejs');
 
 const app = express();
@@ -17,19 +17,20 @@ app.use(express.json());
 
 // mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/dbSparta", {
+mongoose.connect("mongodb://localhost:27017/dbMiniBoard", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongoDB mini-board connection error:"));
 
-// DB
-// const Post = require("./models/post");
+const Posts = require("./models/post");
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const wholePosts = await Posts.find().sort("-createdAt").exec();
+
   res.render('index', {
-    length: 5
+    posts: wholePosts,
   });
 });
 
