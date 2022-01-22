@@ -13,9 +13,11 @@ app.set('views', "./views");
 // assets
 app.use(express.static("assets"));
 
+app.use(express.json());
+
 // mongoose
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/mini-board", {
+mongoose.connect("mongodb://localhost:27017/dbSparta", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -27,7 +29,6 @@ db.on("error", console.error.bind(console, "mongoDB mini-board connection error:
 
 app.get("/", (req, res) => {
   res.render('index', {
-    title: "Mini Board | Home",
     length: 5
   });
 });
@@ -36,8 +37,8 @@ app.get("/post", (req, res) => {
   res.render('post', {
     title: "Mini Board | Post",
     name: "예시 이름"
-  })
-})
+  });
+});
 
 // APIs
 app.use("/api", apiRouter);
