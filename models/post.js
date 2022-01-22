@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
+  id: Number,
   title: String,
   content: String,
-  createdAt: Date,
-  updatedAt: Date,
+  writer: String,
+  password: String,
+  createdAt: String,
 });
 
 PostSchema.virtual("postId").get(function() {
@@ -14,4 +16,4 @@ PostSchema.set("toJSON", {
   virtuals: true,
 });
 
-module.exports = mongoose.model("Todo", TodoSchema);
+module.exports = mongoose.model("Posts", PostSchema);
