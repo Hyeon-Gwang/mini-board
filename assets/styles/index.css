@@ -1,0 +1,16 @@
+.board-box > .board-table{
+  width: 100%;
+}
+.board-box > .board-table > .search-box{
+  display: flex; justify-content: flex-end;
+}
+.board-box > .board-menu{
+  display: flex; flex-direction: row; align-items: center;
+}
+
+.board-box > .board-menu > nav{
+  margin-right: 4px;
+}
+.board-box > .board-menu > nav > ul{
+  margin-bottom: 0;
+}
