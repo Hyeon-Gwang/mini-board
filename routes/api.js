@@ -21,7 +21,24 @@ router.post("/post/new", async (req, res) => {
     return res.status(201).send({ result: "success" });
   } catch(error) {
     console.error(error);
-    return res.status().send({ result: "fail", error: error });
+    return res.status().send({ result: "error", error: error });
+  };
+});
+
+// 포스트 비밀번호 확인 GET /api/post/1/password/1234
+router.get("/post/:postId/password/:password", async (req, res) => {
+  try {
+    const { postId, password } = req.params;
+    const post = await Posts.findOne({ id: postId });
+
+    const passwordCheck = post.password === password;
+    if(passwordCheck) {
+      return res.status(200).send({ result: "success" });
+    }
+    return res.status(200).send({ result: "fail" });
+  } catch(error) {
+    console.error(error);
+    return res.send({ result: "error", error: error });
   };
 });
 
