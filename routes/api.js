@@ -3,12 +3,8 @@ const router = express.Router();
 
 const Posts = require("../models/post");
 
-router.get('/posts', (req, res) => {
-  res.send('모든 포스트 불러오기')
-});
-
 // 새 포스트 작성 POST /api/post/new
-router.post('/post/new', async (req, res) => {
+router.post("/post/new", async (req, res) => {
   try {
     const { title, content, writer, password, date } = req.body;
 
@@ -22,12 +18,11 @@ router.post('/post/new', async (req, res) => {
     const newPost = new Posts({ id, title, content, writer, password, createdAt: date, });
     await newPost.save();
 
-    return res.status(201).send({ result: 'success' });
+    return res.status(201).send({ result: "success" });
   } catch(error) {
     console.error(error);
-    return res.status(404).send({ result: 'fail', error: error });
-  }
-  
+    return res.status().send({ result: "fail", error: error });
+  };
 });
 
 module.exports = router;
