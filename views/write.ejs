@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Board | 게시물 작성</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+  <!-- TUI editor -->
+  <!-- <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.css" /> -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+  <!-- axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- styles -->
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+  <!-- 제목 -->
+  <h1 class="logo"><a href="/">Mini Board</a></h1>
+
+  <!-- 테이블 -->
+  <div class="box write-box shadow">
+    <input style="height: 62px; margin-bottom: 4px;" type="text" id="titleInput" class="form-control" placeholder="제목을 입력하세요.">
+    <input style="margin-bottom: 4px;" type="text" id="writerInput" class="form-control" placeholder="이름을 입력하세요.">
+    <div id="editor" style="width: 100%;"></div>
+    <!-- TUI editor -->
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <input style="margin: 4px 0;" type="password" id="passwordInput" class="form-control" placeholder="비밀번호를 입력하세요.">
+    
+    <button id="writeBtn" class="btn btn-primary">글 작성하기</button>
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    2022, created by Hyeongwang
+  </footer>
+
+  <!-- scripts -->
+  <script>
+    const editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      height: "700px",
+    });
+    
+    editor.getMarkdown();
+  </script>
+  
+  
+  <script src="scripts/app.js"></script>
+</body>
+</html>
