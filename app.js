@@ -89,20 +89,36 @@ app.get("/search", async (req, res) => {
     });
   } catch(error) {
     console.error(error);
-    return res.status().send({ result: "fail", error: error });
+    return res.status().send({ result: "error", error: error });
   }
 });
 
-app.get("/write", (req, res) => {
-  res.render("write");
+app.get("/write", async (req, res) => {
+  try {
+    const postId = req.query.postId;
+    if(postId) { // 수정 하는 경우
+      const post = await Posts.findOne({ id: postId });
+      return res.render("write", { post: post });
+    }
+    // 새로운 포스트 작성하는 경우
+    return res.render("write");
+  } catch(error) {
+    console.error(error);
+    return res.send({ result: "error", error: error });
+  }
 });
 
 // /post/4
-app.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const post = await Posts.findOne({ id: id });
-
-  return res.render("post", { post: post });
+app.get("/post", async (req, res) => {
+  try {
+    const id = req.query.postId;
+    const post = await Posts.findOne({ id: id });
+  
+    return res.render("post", { post: post });
+  } catch(error) {
+    console.error(error);
+    return res.send({ result: "error", error: error});
+  }
 });
 
 // APIs
