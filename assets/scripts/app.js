@@ -1,6 +1,11 @@
 const $writeBtn = document.querySelector("#writeBtn");
 const $searchInput = document.querySelector('#searchInput');
 
+const editor = new toastui.Editor({
+  el: document.querySelector('#editor'),
+  height: "700px",
+});
+
 function getDate() {
   const today = new Date();
 
@@ -19,7 +24,7 @@ function getDate() {
 // 포스트 작성하기
 async function writePost() {
   const title = document.querySelector("#titleInput").value;
-  const content = document.querySelector("#contentInput").value;
+  const content = editor.getHTML();
   const writer = document.querySelector("#writerInput").value;
   const password = document.querySelector("#passwordInput").value;
   const date = getDate();

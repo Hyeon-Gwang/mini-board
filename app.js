@@ -100,6 +100,10 @@ app.get("/post", (req, res) => {
   });
 });
 
+app.get("/write", (req, res) => {
+  res.render('write');
+});
+
 // APIs
 app.use("/api", apiRouter);
 
