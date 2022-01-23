@@ -25,7 +25,7 @@
   <h1 class="logo"><a href="/">Mini Board</a></h1>
 
   <!-- 테이블 -->
-  <div class="box write-box shadow">
+  <div class="box write-box shadow space-between flex-end">
     <input style="height: 62px; margin-bottom: 4px;" type="text" id="titleInput" class="form-control" placeholder="제목을 입력하세요.">
     <input style="margin-bottom: 4px;" type="text" id="writerInput" class="form-control" placeholder="이름을 입력하세요.">
     <div id="editor" style="width: 100%;"></div>
@@ -42,6 +42,12 @@
   </footer>
 
   <!-- scripts -->
-  <script src="scripts/app.js"></script>
+  <script>
+    const editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      height: "700px",
+    });
+  </script>
+  <script src="scripts/write.js"></script>
 </body>
 </html>
