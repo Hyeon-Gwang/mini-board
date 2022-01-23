@@ -1,14 +1,14 @@
 const express = require("express");
 // const bodyParser = require("body-parser");
-const ejs = require('ejs');
+const ejs = require("ejs");
 
 const app = express();
 
-const apiRouter = require('./routes/api');
+const apiRouter = require("./routes/api");
 
 // EJS setting
 app.set("view engine", "ejs");
-app.set('views', "./views");
+app.set("views", "./views");
 
 // assets
 app.use(express.static("assets"));
@@ -26,8 +26,7 @@ db.on("error", console.error.bind(console, "mongoDB mini-board connection error:
 
 const Posts = require("./models/post");
 
-
-
+// /
 app.get("/", async (req, res) => {
   const page = parseInt(req.query.page);                  // 현재 페이지
   const numPosts = await Posts.estimatedDocumentCount();  // 전체 포스트 갯수
@@ -36,12 +35,13 @@ app.get("/", async (req, res) => {
   // 현재 page에 맞춰서 포스트 가져오기
   const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
 
-  res.render('index', {
+  res.render("index", {
     posts: wholePosts,
     pages: wholePages,
   });
 });
 
+// /search
 app.get("/search", async (req, res) => {
   try {
     const { type, value, page } = req.query;
@@ -81,7 +81,7 @@ app.get("/search", async (req, res) => {
 
     const wholePages = Math.ceil(numSearchedPosts / 15)          // 15로 나눠서 필요한 페이지 갯수 구하기
 
-    return res.render('search', {
+    return res.render("search", {
       posts: searchedPosts,
       pages: wholePages,
       type,
@@ -93,15 +93,16 @@ app.get("/search", async (req, res) => {
   }
 });
 
-app.get("/post", (req, res) => {
-  res.render('post', {
-    title: "Mini Board | Post",
-    name: "예시 이름"
-  });
+app.get("/write", (req, res) => {
+  res.render("write");
 });
 
-app.get("/write", (req, res) => {
-  res.render('write');
+// /post/4
+app.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const post = await Posts.findOne({ id: id });
+
+  return res.render("post", { post: post });
 });
 
 // APIs
