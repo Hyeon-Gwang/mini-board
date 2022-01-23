@@ -22,7 +22,7 @@
   <h1 class="logo"><a href="/">Mini Board</a></h1>
 
   <!-- 테이블 -->
-  <div class="box board-box shadow">
+  <div class="box board-box shadow space-between flex-end">
     <div class="board-table">
       <div class="search-box" style="margin-bottom: 12px;">
         <select id="searchType" class="form-select form-select-sm" style="width:132px; margin-right: 8px;">
@@ -47,10 +47,10 @@
         <tbody>
           <% for(let i = 0; i < posts.length; i++) { %>
             <tr>
-              <td><%= posts[i].id %></td>
-              <td><%= posts[i].title %></td>
-              <td><%= posts[i].writer %></td>
-              <td>
+              <td data-id="<%= posts[i].id %>"><%= posts[i].id %></td>
+              <td data-id="<%= posts[i].id %>"><%= posts[i].title %></td>
+              <td data-id="<%= posts[i].id %>"><%= posts[i].writer %></td>
+              <td data-id="<%= posts[i].id %>">
                 <%= String(posts[i].createdAt).slice(0, 4) %>-<%= String(posts[i].createdAt).slice(4, 6) %>-<%= String(posts[i].createdAt).slice(6, 8) %>
               </td>
             </tr>
@@ -89,6 +89,6 @@
   </footer>
 
   <!-- scripts -->
-  <script src="scripts/app.js" type="module"></script>
+  <script src="scripts/app.js"></script>
 </body>
 </html>

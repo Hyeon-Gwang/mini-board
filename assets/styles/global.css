@@ -21,9 +21,15 @@ button > a:hover{ color: #fff; }
 }
 
 .box{
-  display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;
+  display: flex; flex-direction: column;
   min-height: calc(100vh - 172px); width: 1224px; padding: 12px; margin: 0 auto;
   background-color: #fff;
+}
+.space-between{
+  justify-content: space-between;
+}
+.flex-end{
+  align-items: flex-end;
 }
 
 footer{
