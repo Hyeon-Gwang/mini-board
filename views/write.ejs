@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
+  <% const ejsPost = typeof post !== "undefined" ? post : false %>
   <!-- 제목 -->
   <h1 class="logo"><a href="/">Mini Board</a></h1>
 
@@ -43,11 +44,27 @@
 
   <!-- scripts -->
   <script>
+    const jsPost = <%- ejsPost  %>;
+    
     const editor = new toastui.Editor({
       el: document.querySelector('#editor'),
       height: "700px",
     });
+
+    if(jsPost) {
+      console.log('type:', typeof jsPost.content);
+      const $titleInput = document.querySelector('#titleInput');
+      const $writerInput = document.querySelector('#writerInput');
+
+      $titleInput.value = jsPost.title;
+      $writerInput.value = jsPost.writer;
+      editor.setHTML(jsPost.content);
+    }
   </script>
   <script src="scripts/write.js"></script>
+  <script>
+    
+
+  </script>
 </body>
 </html>

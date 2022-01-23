@@ -93,11 +93,12 @@ app.get("/search", async (req, res) => {
   }
 });
 
+// /write
 app.get("/write", async (req, res) => {
   try {
     const postId = req.query.postId;
     if(postId) { // 수정 하는 경우
-      const post = await Posts.findOne({ id: postId });
+      const post = await Posts.findOne({ id: postId }, { _id: false });
       return res.render("write", { post: post });
     }
     // 새로운 포스트 작성하는 경우
@@ -108,7 +109,7 @@ app.get("/write", async (req, res) => {
   }
 });
 
-// /post/4
+// /post?postId=4
 app.get("/post", async (req, res) => {
   try {
     const id = req.query.postId;
