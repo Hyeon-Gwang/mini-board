@@ -25,7 +25,6 @@
   <!-- 제목 -->
   <h1 class="logo"><a href="/">Mini Board</a></h1>
 
-  <!-- 테이블 -->
   <div class="box write-box shadow space-between flex-end">
     <input style="height: 62px; margin-bottom: 4px;" type="text" id="titleInput" class="form-control" placeholder="제목을 입력하세요.">
     <input style="margin-bottom: 4px;" type="text" id="writerInput" class="form-control" placeholder="이름을 입력하세요.">
@@ -34,7 +33,14 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <input style="margin: 4px 0;" type="password" id="passwordInput" class="form-control" placeholder="비밀번호를 입력하세요.">
     
-    <button id="writeBtn" class="btn btn-primary">글 작성하기</button>
+    <div style="display: flex; justify-content: center;">
+      <% if(post) { %>
+        <button style="margin-right: 4px;" id="deleteBtn" class="btn btn-outline-danger">삭제하기</button>
+        <button id="editBtn" class="btn btn-primary">수정하기</button>
+      <% } else { %>
+        <button id="writeBtn" class="btn btn-primary">작성하기</button>
+      <% } %>
+    </div>
   </div>
 
   <!-- 푸터 -->
@@ -52,7 +58,6 @@
     });
 
     if(jsPost) {
-      console.log('type:', typeof jsPost.content);
       const $titleInput = document.querySelector('#titleInput');
       const $writerInput = document.querySelector('#writerInput');
 
@@ -62,9 +67,5 @@
     }
   </script>
   <script src="scripts/write.js"></script>
-  <script>
-    
-
-  </script>
 </body>
 </html>
