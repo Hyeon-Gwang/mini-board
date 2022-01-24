@@ -124,6 +124,6 @@ app.get("/post", async (req, res) => {
 // APIs
 app.use("/api", apiRouter);
 
-app.listen(8080, () => {
+app.listen(3000, () => {
   console.log("Mini-board server is running!!");
 });
