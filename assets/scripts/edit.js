@@ -7,7 +7,7 @@ async function edit(e) {
 
   const passwordCheck = await axios.get(`/api/post/${postId}/password/${password}`);
   
-  if(passwordCheck.data.result === "success") { window.location.href = `/write?postId=${postId}`; }
+  if(passwordCheck.data.result === "success") { return window.location.href = `/write?postId=${postId}`; }
   if(passwordCheck.data.result === "fail") { return alert("비밀번호가 일치하지 않습니다."); }
   return alert("알 수 없는 오류: ", passwordCheck.error);
 }
