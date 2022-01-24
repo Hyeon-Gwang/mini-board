@@ -5,31 +5,35 @@ const app = express();
 
 const apiRouter = require("./routes/api");
 
+console.log('0');
 // EJS setting
 app.set("view engine", "ejs");
 app.set("views", "./views");
-
+console.log('1');
 // assets
 app.use(express.static("assets"));
 
 app.use(express.json());
-
+console.log('2');
 // mongoose
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/dbMiniBoard", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+console.log('3');
 const db = mongoose.connection;
+console.log('4');
 db.on("error", console.error.bind(console, "mongoDB mini-board connection error:"));
 
+console.log('5');
 const Posts = require("./models/post");
-
+console.log('6');
 // /
 app.get("/", async (req, res) => {
+  console.log('/ 안이다.')
   const page = parseInt(req.query.page);                  // 현재 페이지
-  const numPosts = 0;  // 전체 포스트 갯수
-  // const numPosts = await Posts.estimatedDocumentCount();  // 전체 포스트 갯수
+  const numPosts = await Posts.estimatedDocumentCount();  // 전체 포스트 갯수
   const wholePages = Math.ceil(numPosts / 15)             // 15로 나눠서 필요한 페이지 갯수 구하기
 
   // 현재 page에 맞춰서 포스트 가져오기
