@@ -34,7 +34,7 @@ app.get("/", async (req, res) => {
   console.log('/ 안이다.')
   const page = parseInt(req.query.page);                  // 현재 페이지
   const numPosts = await Posts.estimatedDocumentCount();  // 전체 포스트 갯수
-  const wholePages = Math.ceil(numPosts / 15)             // 15로 나눠서 필요한 페이지 갯수 구하기
+  const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)             // 15로 나눠서 필요한 페이지 갯수 구하기
 
   // 현재 page에 맞춰서 포스트 가져오기
   const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
