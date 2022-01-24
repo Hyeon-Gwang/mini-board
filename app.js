@@ -32,13 +32,13 @@ console.log('6');
 // /
 app.get("/", async (req, res) => {
   console.log('/ 안이다.')
-  const page = parseInt(req.query.page);                  // 현재 페이지
-  const numPosts = await Posts.estimatedDocumentCount();  // 전체 포스트 갯수
-  const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)             // 15로 나눠서 필요한 페이지 갯수 구하기
-
+  const page =  req.query.page ? parseInt(req.query.page) : 1;          // 현재 페이지
+  const numPosts = await Posts.estimatedDocumentCount();                // 전체 포스트 갯수
+  const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)      // 15로 나눠서 필요한 페이지 갯수 구하기
+  console.log('전체 갯수: ', numPosts, '페이지 갯수: ', wholePages, '현재 페이지: ', page);
   // 현재 page에 맞춰서 포스트 가져오기
-  // const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
-  const wholePosts = await Posts.find().sort("-createdAt").exec();
+  const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
+  // const wholePosts = await Posts.find().sort("-createdAt").exec();
 
   res.render("index", {
     posts: wholePosts,
