@@ -1,12 +1,35 @@
 const express = require("express");
 const router = express.Router();
 
+const sanitizeHTML = require("sanitize-html");
+function sanitize(text) {
+  return sanitizeHTML(text, {
+    allowedTags: [
+      "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+      "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+      "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+      "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+      "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+      "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+      "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr",
+      "img",
+    ],
+    allowedAttributes: { img: [ "src" ], },
+    allowedSchemes: [ "data" ],
+  })
+}
+
 const Posts = require("../models/post");
 
 // 새 포스트 작성 POST /api/post/new
 router.post("/post/new", async (req, res) => {
   try {
     const { title, content, writer, password, date } = req.body;
+
+    const sanitizedTitle = sanitize(title);
+    const sanitizedContent = sanitize(content);
+    const sanitizedWriter = sanitize(writer);
+    const sanitizedPassword = sanitize(password);
 
     let id  = 1;
 
@@ -15,7 +38,13 @@ router.post("/post/new", async (req, res) => {
       id = lastPost.id + 1;
     };
 
-    const newPost = new Posts({ id, title, content, writer, password, createdAt: date, });
+    const newPost = new Posts({ id,
+      title: sanitizedTitle,
+      content: sanitizedContent,
+      writer: sanitizedWriter,
+      password: sanitizedPassword,
+      createdAt: date
+    });
     await newPost.save();
 
     return res.status(201).send({ result: "success" });
