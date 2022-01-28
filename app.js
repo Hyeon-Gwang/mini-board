@@ -27,17 +27,22 @@ const Posts = require("./models/post");
 
 // /
 app.get("/", async (req, res) => {
-  const page =  req.query.page ? parseInt(req.query.page) : 1;          // 현재 페이지
-  const numPosts = await Posts.estimatedDocumentCount();                // 전체 포스트 갯수
-  const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)      // 15로 나눠서 필요한 페이지 갯수 구하기
-  // 현재 page에 맞춰서 포스트 가져오기
-  const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
+  res.redirect("/login");
+  // const page =  req.query.page ? parseInt(req.query.page) : 1;          // 현재 페이지
+  // const numPosts = await Posts.estimatedDocumentCount();                // 전체 포스트 갯수
+  // const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)      // 15로 나눠서 필요한 페이지 갯수 구하기
+  // // 현재 page에 맞춰서 포스트 가져오기
+  // const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
 
-  res.render("index", {
-    posts: wholePosts,
-    pages: wholePages,
-  });
+  // res.render("index", {
+  //   posts: wholePosts,
+  //   pages: wholePages,
+  // });
 });
+
+app.get("/login", (req, res) => {
+  res.render("login");
+})
 
 // /search
 app.get("/search", async (req, res) => {
