@@ -73,6 +73,11 @@ router.post("/auth", async (req, res) => {
   });
 });
 
+// 로그아웃 DELETE /api/auth
+router.delete("/auth", (req, res) => {
+  res.clearCookie("MiniBoard");
+  return res.status(200).send({ result: "success" });
+});
 
 // 새 포스트 작성 POST /api/post/new
 router.post("/post/new", async (req, res) => {
