@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Open Graphs -->
+  <meta property="og:title" content="MiniBoard | 회원가입">
+  <meta property="og:description" content="당신의 생각을 자유롭게 적어보세요.">
+  <meta property="og:type" content="website">
+  <!-- <meta property="og:url" content=""> -->
+  <!-- <meta property="og:imgae" content=""> -->
+
+  <title>Mini Board | 회원가입</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+  <!-- axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- styles -->
+  <link rel="stylesheet" href="styles/global.css">
+</head>
+<body>
+  <!-- 제목 -->
+  <h1 class="logo"><a href="/">Mini Board</a></h1>
+
+  <div class="shadow" style="display: flex; flex-direction: column; align-items: center; margin-top: -160px; padding: 24px 16px 16px; background-color: #fff;">
+    <h2 style="margin-bottom: 16px;">회원가입</h2>
+    <div style="display: flex; flex-direction: row; margin-bottom: 8px;">
+      <span style="width: 92px;">이메일 :</span>
+      <input id="emailInput" type="text" style="width: 240px" />
+    </div>
+    <div style="display: flex; flex-direction: row; margin-bottom: 8px;">
+      <span style="width: 92px;">닉네임 :</span>
+      <input id="nicknameInput" type="text" style="width: 240px" />
+    </div>
+    <div style="display: flex; flex-direction: row; margin-bottom: 8px;">
+      <span style="width: 92px;">비밀번호 :</span>
+      <input id="passwordInput" type="password" style="width: 240px" />
+    </div>
+    <div style="display: flex; flex-direction: row; margin-bottom: 8px;">
+      <span style="width: 92px; font-size: 13px;">비밀번호 확인 :</span>
+      <input id="passwordCheckInput" type="password" style="width: 240px" />
+    </div>
+    <button id="signUpBtn" style="width: 100%" class="btn btn-primary">회원가입</button>
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    2022, created by Hyeongwang
+  </footer>
+
+  <!-- scripts -->
+  <script>
+    const $signUpBtn = document.querySelector("#signUpBtn");
+
+    $signUpBtn.addEventListener("click", async () => {
+      const email = document.querySelector("#emailInput").value;
+      const nickname = document.querySelector("#nicknameInput").value;
+      const password = document.querySelector("#passwordInput").value;
+      const passwordCheck = document.querySelector("#passwordCheckInput").value;
+
+      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+      const emailCheck = emailRegex.test(email);
+
+      const nicknameRegex = /^[a-zA-z0-9]{3,}$/g
+      const nicknameCheck = nicknameRegex.test(nickname);
+      if(!emailCheck) { return alert("잘못된 이메일 형식입니다."); };
+      if(!nicknameCheck) { return alert("닉네임은 영문 혹은 숫자로 3글자 이상만 가능합니다."); };
+      if(password === "") { return alert("비밀번호를 입력하세요."); };
+      if(password.length < 4) { return alert("비밀번호는 4글자 이상만 가능합니다."); };
+      if(password.includes(nickname)) { return alert("비밀번호에는 닉네임을 포함하면 안됩니다."); };
+      if(password !== passwordCheck) { return alert("비밀번호가 일치하지 않습니다."); };
+
+      const result = await axios.post("/api/user/new", {
+        email, nickname, password
+      });
+      if(result.data.result === "success") { window.location.href = "/login"; };
+      if(result.data.result === "fail") { return alert(result.data.message); };
+      if(result.data.result === "error") { return alert(result.error); };
+    });
+  </script>
+</body>
+</html>
