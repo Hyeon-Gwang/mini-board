@@ -1,7 +1,10 @@
 const express = require("express");
-const ejs = require("ejs");
+const cookieParser = require("cookie-parser");
 
 const app = express();
+
+// middlewares
+const auth = require("./middlewares/auth");
 
 const apiRouter = require("./routes/api");
 
@@ -13,6 +16,7 @@ app.set("views", "./views");
 app.use(express.static("assets"));
 
 app.use(express.json());
+app.use(cookieParser());
 
 // mongoose
 const mongoose = require("mongoose");
@@ -26,23 +30,27 @@ db.on("error", console.error.bind(console, "mongoDB mini-board connection error:
 const Posts = require("./models/post");
 
 // /
-app.get("/", async (req, res) => {
-  res.redirect("/login");
-  // const page =  req.query.page ? parseInt(req.query.page) : 1;          // 현재 페이지
-  // const numPosts = await Posts.estimatedDocumentCount();                // 전체 포스트 갯수
-  // const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)      // 15로 나눠서 필요한 페이지 갯수 구하기
-  // // 현재 page에 맞춰서 포스트 가져오기
-  // const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
+app.get("/", auth, async (req, res) => {
+  const page =  req.query.page ? parseInt(req.query.page) : 1;          // 현재 페이지
+  const numPosts = await Posts.estimatedDocumentCount();                // 전체 포스트 갯수
+  const wholePages = numPosts === 0 ? 1 : Math.ceil(numPosts / 15)      // 15로 나눠서 필요한 페이지 갯수 구하기
+  // 현재 page에 맞춰서 포스트 가져오기
+  const wholePosts = await Posts.find().sort("-createdAt").skip(15 * (page - 1)).limit(15).exec();
 
-  // res.render("index", {
-  //   posts: wholePosts,
-  //   pages: wholePages,
-  // });
+  const user = res.locals.user;
+  res.render("index", {
+    posts: wholePosts,
+    pages: wholePages,
+  });
 });
 
 app.get("/login", (req, res) => {
   res.render("login");
 })
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
 
 // /search
 app.get("/search", async (req, res) => {
