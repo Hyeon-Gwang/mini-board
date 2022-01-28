@@ -17,7 +17,7 @@ button > a:hover{ color: #fff; }
 
 /* menu */
 .menu{
-  position: absolute; top: 16px; left: 16px;
+  position: fixed; top: 16px; left: 16px;
   height: 74px;
   font-size: 48px;
 }
