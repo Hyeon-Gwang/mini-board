@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const auth = require("../middlewares/auth");
+
 const jwt = require("jsonwebtoken");
 
 const sanitizeHTML = require("sanitize-html");
@@ -37,8 +39,7 @@ router.post("/user/new", async (req, res) => {
     };
 
     // 마지막 user id 값 찾고 + 1 해서 userId 값으로 할당 / 없으면 1로
-    const lastUser = await Users.findOne().sort("-id").select("id - _id").exec();
-    console.log('lastUser:', lastUser);
+    const lastUser = await Users.findOne().sort("-id").exec();
     const userId = lastUser
       ? lastUser.id + 1
       : 1;
@@ -64,8 +65,11 @@ router.post("/auth", async (req, res) => {
     return res.status(400).send({ result: "fail", message: "이메일 또는 패스워드가 맞지 않습니다." });
   }
 
+  const token = jwt.sign({ email }, "Mini-Board-secret-key");
+
+  res.cookie("MiniBoard", token, { path: "/", httpOnly: true });
   return res.status(200).send({
-    token: jwt.sign( { email }, "Mini-Board-secret-key" ),
+    result: "success",
   });
 });
 

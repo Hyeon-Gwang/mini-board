@@ -62,8 +62,7 @@
 
       const result = await axios.post("/api/auth", { email, password });
       if(result.data.result === "success") {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.token}`  
-        return window.location.href = "/"
+        window.location.href = "/";
       };
       if(result.data.result === "fail") { return alert(result.data.message); };
       if(result.data.result === "error") { return alert(result.error); };
