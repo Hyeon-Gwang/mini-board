@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const jwt = require("jsonwebtoken");
+
 const sanitizeHTML = require("sanitize-html");
 function sanitize(text) {
   return sanitizeHTML(text, {
@@ -19,7 +21,54 @@ function sanitize(text) {
   })
 }
 
+const Users = require("../models/user");
 const Posts = require("../models/post");
+
+// 회원가입 POST /api/user/new
+router.post("/user/new", async (req, res) => {
+  try {
+    const { email, nickname, password } = req.body;
+
+    const isExist = await Users.findOne({
+      $or: [{ email }, { nickname }],
+    });
+    if(isExist) {
+      return res.status(400).send({ result: "fail", message: "이미 사용중인 이메일 혹은 닉네임입니다." });
+    };
+
+    // 마지막 user id 값 찾고 + 1 해서 userId 값으로 할당 / 없으면 1로
+    const lastUser = await Users.findOne().sort("-id").select("id - _id").exec();
+    console.log('lastUser:', lastUser);
+    const userId = lastUser
+      ? lastUser.id + 1
+      : 1;
+
+    // Users에 user 저장
+    const user = new Users({ id: userId, email, nickname, password });
+    await user.save();
+
+    return res.status(201).send({ result: "success" });
+  } catch(error) {
+    console.error(error);
+    return res.status(400).send({ result: "error", error });
+  };
+});
+
+// 로그인 POST /api/auth
+router.post("/auth", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await Users.findOne({ email });
+
+  if(!user || password !== user.password) {
+    return res.status(400).send({ result: "fail", message: "이메일 또는 패스워드가 맞지 않습니다." });
+  }
+
+  return res.status(200).send({
+    token: jwt.sign( { email }, "Mini-Board-secret-key" ),
+  });
+});
+
 
 // 새 포스트 작성 POST /api/post/new
 router.post("/post/new", async (req, res) => {
