@@ -5,7 +5,10 @@ async function addComment(e) {
     const comment = $commentInput.value;
     const date = getDate();
     
-    await axios.post(`/api/post/${postId}/comment`, { comment, userId: user._id, date });
+    const result = await axios.post(`/api/post/${postId}/comment`, { comment, userId: user._id, date });
+    if(result.data.result === "success") {
+      return window.location.reload();
+    }
   };
 };
 $commentInput.addEventListener("keyup", addComment);

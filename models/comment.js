@@ -10,7 +10,7 @@ const CommentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  writerId: {
+  writer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: true,
