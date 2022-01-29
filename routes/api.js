@@ -25,6 +25,8 @@ function sanitize(text) {
 
 const Users = require("../models/user");
 const Posts = require("../models/post");
+const Comments = require("../models/comment");
+const comment = require("../models/comment");
 
 // 회원가입 POST /api/user/new
 router.post("/user/new", async (req, res) => {
@@ -38,14 +40,8 @@ router.post("/user/new", async (req, res) => {
       return res.status(400).send({ result: "fail", message: "이미 사용중인 이메일 혹은 닉네임입니다." });
     };
 
-    // 마지막 user id 값 찾고 + 1 해서 userId 값으로 할당 / 없으면 1로
-    const lastUser = await Users.findOne().sort("-id").exec();
-    const userId = lastUser
-      ? lastUser.id + 1
-      : 1;
-
     // Users에 user 저장
-    const user = new Users({ id: userId, email, nickname, password });
+    const user = new Users({ email, nickname, password });
     await user.save();
 
     return res.status(201).send({ result: "success" });
@@ -67,7 +63,7 @@ router.post("/auth", async (req, res) => {
 
   const token = jwt.sign({ email }, "Mini-Board-secret-key");
 
-  res.cookie("MiniBoard", token, { path: "/", httpOnly: true, secure: true });
+  res.cookie("MiniBoard", token, { path: "/", httpOnly: true, sameSite: "lax" });
   return res.status(200).send({
     result: "success",
   });
@@ -77,6 +73,12 @@ router.post("/auth", async (req, res) => {
 router.delete("/auth", (req, res) => {
   res.clearCookie("MiniBoard");
   return res.status(200).send({ result: "success" });
+});
+
+// 사용자 정보 가져오기
+router.get("/user", auth, (req, res) => {
+  const user = res.locals.user;
+  return res.status(200).send({ user });
 });
 
 // 새 포스트 작성 POST /api/post/new
@@ -96,12 +98,13 @@ router.post("/post/new", async (req, res) => {
       id = lastPost.id + 1;
     };
 
-    const newPost = new Posts({ id,
+    const newPost = new Posts({
+      id,
       title: sanitizedTitle,
       content: sanitizedContent,
       writer: sanitizedWriter,
       password: sanitizedPassword,
-      createdAt: date
+      createdAt: date,
     });
     await newPost.save();
 
@@ -151,12 +154,40 @@ router.get("/post/:postId/password/:password", async (req, res) => {
     const passwordCheck = post.password === password;
     if(passwordCheck) {
       return res.status(200).send({ result: "success" });
-    }
+    };
     return res.status(200).send({ result: "fail" });
   } catch(error) {
     console.error(error);
-    return res.send({ result: "error", error: error });
+    return res.send({ result: "error", error });
   };
 });
+
+// 댓글 작성 POST /api/post/1/comment/new
+router.post("/post/:postId/comment", auth, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { comment, userId, date } = req.body;
+    // 비밀번호 id 만들기
+    let id  = 1;
+    const lastComment = await Comments.findOne().sort("-createdAt").exec();
+    if(lastComment) {
+      id = lastComment.id + 1;
+    };
+    
+    const newComment = new Comments({
+      id,
+      comment: comment,
+      postId,
+      writerId: userId,
+      createdAt: date,
+    })
+    await newComment.save();
+    return res.status(201).send({ result: "success" });
+  } catch(error) {
+    console.error(error);
+    return res.status(400).send({ result: "error", error });
+  };
+});
+
 
 module.exports = router;
