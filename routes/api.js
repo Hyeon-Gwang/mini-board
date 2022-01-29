@@ -67,7 +67,7 @@ router.post("/auth", async (req, res) => {
 
   const token = jwt.sign({ email }, "Mini-Board-secret-key");
 
-  res.cookie("MiniBoard", token, { path: "/", httpOnly: true });
+  res.cookie("MiniBoard", token, { path: "/", httpOnly: true, secure: true });
   return res.status(200).send({
     result: "success",
   });
