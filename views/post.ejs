@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Open Graphs -->
-  <meta property="og:title" content="MiniBoard | Post">
+  <meta property="og:title" content="<%= post.title %>">
   <meta property="og:description" content="<%= post.title %>">
   <meta property="og:type" content="website">
   <!-- <meta property="og:url" content=""> -->
@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="styles/global.css">
 </head>
 <body>
+  <% const ejsPostId = post.id %>
+
   <!-- 사용자 메뉴 -->
   <div class="menu">
     <div class="menu-btn"></div>
@@ -57,13 +59,25 @@
     </div>
   </div>
 
+  <!-- 댓글 작성란 -->
+  <div>
+    <input type="text" id="commentInput" class="shadow" placeholder="코멘트를 작성하세요."
+      style="width: 1224px; height: 36px; margin: 0 auto 16px;"
+      />
+  </div>
+
   <!-- 푸터 -->
   <footer>
     2022, created by Hyeongwang
   </footer>
   
   <!-- scripts -->
+  <script>
+    const postId = <%= ejsPostId %>;
+  </script>
+  <script src="scripts/user.js"></script>
+  <script src="scripts/getDate.js"></script>
   <script src="scripts/edit.js"></script>
-  <script src="scripts/logout.js"></script>
+  <script src="scripts/comment.js"></script>
 </body>
 </html>

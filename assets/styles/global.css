@@ -74,7 +74,7 @@ button > a:hover{ color: #fff; }
 
 .box{
   display: flex; flex-direction: column;
-  min-height: calc(100vh - 172px); width: 1224px; padding: 12px; margin: 0 auto;
+  min-height: calc(100vh - 172px); width: 1224px; padding: 12px; margin: 0 auto 16px;
   background-color: #fff;
 }
 .space-between{
