@@ -30,7 +30,7 @@
   <div class="menu">
     <div class="menu-btn"></div>
     <ul class="dropdown">
-      <% if(user) { %>
+      <% if(typeof user !== "undefined") { %>
         <li id="logoutBtn" style="font-size: 14px;">로그아웃</li>
       <% } else { %>
         <li><a href="/login">로그인</a></li>
