@@ -178,7 +178,7 @@ router.post("/post/:postId/comment", auth, async (req, res) => {
       id,
       comment: comment,
       postId,
-      writerId: userId,
+      writer: userId,
       createdAt: date,
     })
     await newComment.save();
