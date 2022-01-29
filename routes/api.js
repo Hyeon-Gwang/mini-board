@@ -163,7 +163,7 @@ router.get("/post/:postId/password/:password", async (req, res) => {
 });
 
 // 댓글 작성 POST /api/post/1/comment/new
-router.post("/post/:postId/comment", auth, async (req, res) => {
+router.post("/post/:postId/comment", async (req, res) => {
   try {
     const { postId } = req.params;
     const { comment, userId, date } = req.body;
@@ -183,6 +183,19 @@ router.post("/post/:postId/comment", auth, async (req, res) => {
     })
     await newComment.save();
     return res.status(201).send({ result: "success" });
+  } catch(error) {
+    console.error(error);
+    return res.status(400).send({ result: "error", error });
+  };
+});
+
+// 댓글 삭제 DELETE /api/post/1/comment
+router.delete("/post/:postId/comment/:commentId", async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    
+    await Comments.findOneAndDelete({ id: commentId });
+    return res.status(200).send({ result: "success" });
   } catch(error) {
     console.error(error);
     return res.status(400).send({ result: "error", error });
