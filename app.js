@@ -28,6 +28,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongoDB mini-board connection error:"));
 
 const Posts = require("./models/post");
+const Comments = require("./models/comment");
 
 // /
 app.get("/", auth, async (req, res) => {
@@ -41,6 +42,7 @@ app.get("/", auth, async (req, res) => {
   res.render("index", {
     posts: wholePosts,
     pages: wholePages,
+    user,
   });
 });
 
@@ -53,7 +55,7 @@ app.get("/signup", (req, res) => {
 });
 
 // /search
-app.get("/search", async (req, res) => {
+app.get("/search", auth, async (req, res) => {
   try {
     const { type, value } = req.query;
     const page =  req.query.page ? parseInt(req.query.page) : 1;      // 현재 페이지
@@ -93,11 +95,13 @@ app.get("/search", async (req, res) => {
 
     const wholePages = Math.ceil(numSearchedPosts / 15)          // 15로 나눠서 필요한 페이지 갯수 구하기
 
+    const user = res.locals.user;
     return res.render("search", {
       posts: searchedPosts,
       pages: wholePages,
       type,
       value,
+      user,
     });
   } catch(error) {
     console.error(error);
@@ -122,12 +126,17 @@ app.get("/write", async (req, res) => {
 });
 
 // /post?postId=4
-app.get("/post", async (req, res) => {
+app.get("/post", auth, async (req, res) => {
   try {
     const id = req.query.postId;
-    const post = await Posts.findOne({ id: id });
-  
-    return res.render("post", { post: post });
+    const post = await Posts.findOne({ id: id }).exec();
+
+    const comments = await Comments.find({ postId: post.id })
+      .populate("writerId", "_id nickname")
+      .exec();
+
+    const user = res.locals.user;
+    return res.render("post", { post, user, comments });
   } catch(error) {
     console.error(error);
     return res.send({ result: "error", error: error});
