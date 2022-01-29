@@ -132,7 +132,8 @@ app.get("/post", auth, async (req, res) => {
     const post = await Posts.findOne({ id: id }).exec();
 
     const comments = await Comments.find({ postId: post.id })
-      .populate("writerId", "_id nickname")
+      .sort("-createdAt")
+      .populate("writer", "_id nickname")
       .exec();
 
     const user = res.locals.user;
