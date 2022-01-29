@@ -68,7 +68,7 @@
 
   <!-- 댓글 목록 -->
   <% for(let i = 0; i < comments.length; i++) { %>
-    <div data-id="<%= comments[i].id %>" class="shadow" style="display: flex; flex-direction: column; width: 1224px; padding: 8px; margin-bottom: 8px; background-color: #fff;">
+    <div id="commentBox-<%= comments[i].id %>" class="shadow" style="display: flex; flex-direction: column; width: 1224px; padding: 8px; margin-bottom: 8px; background-color: #fff;">
       <div style="display: flex; flex-direction: row; justify-content: space-between; padding-bottom: 4px; font-size: 14px; border-bottom: 1px solid #636e72;">
         <div><%= comments[i].writer.nickname %> 님의 코멘트 || <%= String(comments[i].createdAt).slice(0, 4) %>-<%= String(comments[i].createdAt).slice(4, 6) %>-<%= String(comments[i].createdAt).slice(6, 8) %></div>
         <% if(String(comments[i].writer._id) === String(user._id)) { %>
@@ -78,7 +78,7 @@
           </div>
         <% } %>
       </div>
-      <div style="padding-top: 4px; font-size: 18px;"><%= comments[i].comment %></div>
+      <div id="comment" style="padding-top: 4px; font-size: 18px;"><%= comments[i].comment %></div>
     </div>
   <% } %>
 

@@ -17,11 +17,25 @@ async function addComment(e) {
 $commentInput.addEventListener("keyup", addComment);
 
 function editComment(e) {
+  if(e.keyCode === 13) {
+    console.log('내용:', e.target.value);
+  }
+}
 
+function ceateEditInput(e) {
+  const commentId = e.target.dataset.id;
+  const $commentBox = document.querySelector(`#commentBox-${commentId}`);
+  const $commentDiv = document.querySelector(`#commentBox-${commentId} > #comment`);
+  
+  const $commentEditInput = `<input type='text' value="${$commentDiv.innerText}" onkeyup='editComment(event)' />`
+  const position = "beforeend"
+  
+  $commentBox.removeChild($commentDiv);
+  $commentBox.insertAdjacentHTML(position, $commentEditInput);
 }
 if($commentEditBtns) {
   $commentEditBtns.forEach(editBtn => {
-    editBtn.addEventListener("click", editComment);
+    editBtn.addEventListener("click", ceateEditInput);
   });
 };
 
