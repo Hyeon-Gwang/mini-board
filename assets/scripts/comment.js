@@ -2,32 +2,45 @@ const $commentInput = document.querySelector("#commentInput");
 const $commentEditBtns = document.querySelectorAll("#commentEditBtn");
 const $commentDeleteBtns = document.querySelectorAll("#commentDeleteBtn");
 
+let COMMENT_ID = 9999;
+
 async function addComment(e) {
   if(e.keyCode === 13) {
-    const comment = $commentInput.value;
-    const date = getDate();
-    
-    const result = await axios.post(`/api/post/${postId}/comment`, { comment, userId: user._id, date });
-    if(result.data.result === "success") {
-      $commentInput.value = "";
-      return window.location.reload();
-    }
+    try {
+      const comment = $commentInput.value;
+      const date = getDate();
+  
+      if(comment === "") { return alert("코멘트를 작성해 주세요."); };
+      
+      const result = await axios.post(`/api/post/${postId}/comment`, { comment, date });
+      if(result.data.result === "success") {
+        $commentInput.value = "";
+        return window.location.reload();
+      }
+    } catch(error) {
+      alert("로그인 후 이용 가능합니다.");
+      window.location.href = "/login";
+    };
   };
 };
 $commentInput.addEventListener("keyup", addComment);
 
-function editComment(e) {
+async function editComment(e) {
   if(e.keyCode === 13) {
-    console.log('내용:', e.target.value);
-  }
-}
+    const comment = e.target.value;
+    const result = await axios.patch(`/api/post/${postId}/comment/${COMMENT_ID}`, { comment });
+    if(result.data.result === "success") {
+      window.location.reload();
+    }
+  };
+};
 
 function ceateEditInput(e) {
-  const commentId = e.target.dataset.id;
-  const $commentBox = document.querySelector(`#commentBox-${commentId}`);
-  const $commentDiv = document.querySelector(`#commentBox-${commentId} > #comment`);
+  COMMENT_ID = e.target.dataset.id;
+  const $commentBox = document.querySelector(`#commentBox-${COMMENT_ID}`);
+  const $commentDiv = document.querySelector(`#commentBox-${COMMENT_ID} > #comment`);
   
-  const $commentEditInput = `<input type='text' value="${$commentDiv.innerText}" onkeyup='editComment(event)' />`
+  const $commentEditInput = `<input type='text' value="${$commentDiv.innerText}" onkeyup="editComment(event)" />`
   const position = "beforeend"
   
   $commentBox.removeChild($commentDiv);
@@ -40,9 +53,9 @@ if($commentEditBtns) {
 };
 
 async function deleteComment(e) {
-  const commentId = e.target.dataset.id;
+  const id = e.target.dataset.id;
   
-  const result = await axios.delete(`/api/post/${postId}/comment/${commentId}`, commentId);
+  const result = await axios.delete(`/api/post/${postId}/comment/${id}`);
   if(result.data.result === "success") {
     return window.location.reload();
   };
