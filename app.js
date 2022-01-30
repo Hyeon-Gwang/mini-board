@@ -110,8 +110,12 @@ app.get("/search", auth, async (req, res) => {
 });
 
 // /write
-app.get("/write", async (req, res) => {
+app.get("/write", auth, async (req, res) => {
   try {
+    const user = res.locals.user;
+    if(!user) {
+      return res.redirect("/login");
+    };
     const postId = req.query.postId;
     if(postId) { // 수정 하는 경우
       const post = await Posts.findOne({ id: postId }, { _id: false });
