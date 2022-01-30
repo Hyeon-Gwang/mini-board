@@ -110,23 +110,22 @@ app.get("/search", auth, async (req, res) => {
 });
 
 // /write
-app.get("/write", auth, async (req, res) => {
-  try {
-    const user = res.locals.user;
-    if(!user) {
-      return res.redirect("/login");
-    };
-    const postId = req.query.postId;
-    if(postId) { // 수정 하는 경우
-      const post = await Posts.findOne({ id: postId }, { _id: false });
-      return res.render("write", { post: post });
-    }
-    // 새로운 포스트 작성하는 경우
-    return res.render("write");
-  } catch(error) {
-    console.error(error);
-    return res.send({ result: "error", error: error });
-  }
+app.get("/write", auth, (req, res) => {
+  const user = res.locals.user;
+  if(!user) {
+    return res.redirect("/login");
+  };
+  return res.render("write");
+});
+
+// /edit
+app.get("/edit", auth, (req, res) => {
+  const user = res.locals.user;
+  if(!user) {
+    return res.redirect("/login");
+  };
+
+  return res.render("edit");
 });
 
 // /post?postId=4

@@ -114,6 +114,19 @@ router.post("/post/new", async (req, res, next) => {
   };
 });
 
+// 포스트 정보 불러오기
+router.get("/post/:postId", async (req, res) => {
+  try {
+    const id = req.params.postId;
+
+    const post = await Posts.findOne({ id: id });
+    return res.status(200).send(post);
+  } catch(error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // 포스트 수정 PATCH /api/post/43
 router.patch("/post/:postId", async (req, res, next) => {
   try {
