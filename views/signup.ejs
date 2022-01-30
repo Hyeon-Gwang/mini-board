@@ -59,29 +59,31 @@
     const $signUpBtn = document.querySelector("#signUpBtn");
 
     $signUpBtn.addEventListener("click", async () => {
-      const email = document.querySelector("#emailInput").value;
-      const nickname = document.querySelector("#nicknameInput").value;
-      const password = document.querySelector("#passwordInput").value;
-      const passwordCheck = document.querySelector("#passwordCheckInput").value;
+      try {
+        const email = document.querySelector("#emailInput").value;
+        const nickname = document.querySelector("#nicknameInput").value;
+        const password = document.querySelector("#passwordInput").value;
+        const passwordCheck = document.querySelector("#passwordCheckInput").value;
 
-      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-      const emailCheck = emailRegex.test(email);
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+        const emailCheck = emailRegex.test(email);
 
-      const nicknameRegex = /^[a-zA-z0-9]{3,}$/g
-      const nicknameCheck = nicknameRegex.test(nickname);
-      if(!emailCheck) { return alert("잘못된 이메일 형식입니다."); };
-      if(!nicknameCheck) { return alert("닉네임은 영문 혹은 숫자로 3글자 이상만 가능합니다."); };
-      if(password === "") { return alert("비밀번호를 입력하세요."); };
-      if(password.length < 4) { return alert("비밀번호는 4글자 이상만 가능합니다."); };
-      if(password.includes(nickname)) { return alert("비밀번호에는 닉네임을 포함하면 안됩니다."); };
-      if(password !== passwordCheck) { return alert("비밀번호가 일치하지 않습니다."); };
+        const nicknameRegex = /^[a-zA-z0-9]{3,}$/g
+        const nicknameCheck = nicknameRegex.test(nickname);
+        if(!emailCheck) { return alert("잘못된 이메일 형식입니다."); };
+        if(!nicknameCheck) { return alert("닉네임은 영문 혹은 숫자로 3글자 이상만 가능합니다."); };
+        if(password === "") { return alert("비밀번호를 입력하세요."); };
+        if(password.length < 4) { return alert("비밀번호는 4글자 이상만 가능합니다."); };
+        if(password.includes(nickname)) { return alert("비밀번호에는 닉네임을 포함하면 안됩니다."); };
+        if(password !== passwordCheck) { return alert("비밀번호가 일치하지 않습니다."); };
 
-      const result = await axios.post("/api/user/new", {
-        email, nickname, password
-      });
-      if(result.data.result === "success") { window.location.href = "/login"; };
-      if(result.data.result === "fail") { return alert(result.data.message); };
-      if(result.data.result === "error") { return alert(result.error); };
+        const result = await axios.post("/api/user/new", {
+          email, nickname, password
+        });
+        if(result.data.result === "success") { window.location.href = "/login"; };
+      } catch(error) {
+        return alert("중복된 이메일 혹은 닉네임입니다.");
+      }
     });
   </script>
 </body>

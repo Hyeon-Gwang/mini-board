@@ -36,7 +36,7 @@ router.post("/user/new", async (req, res, next) => {
       $or: [{ email }, { nickname }],
     });
     if(isExist) {
-      return res.status(400).send({ result: "fail", message: "이미 사용중인 이메일 혹은 닉네임입니다." });
+      return res.status(400).send();
     };
 
     // Users에 user 저장
@@ -57,7 +57,7 @@ router.post("/auth", async (req, res) => {
   const user = await Users.findOne({ email });
 
   if(!user || password !== user.password) {
-    return res.status(400).send({ result: "fail", message: "이메일 또는 패스워드가 맞지 않습니다." });
+    return res.send({ result: "fail", message: "이메일 또는 패스워드가 맞지 않습니다." });
   }
 
   const token = jwt.sign({ email }, "Mini-Board-secret-key");
