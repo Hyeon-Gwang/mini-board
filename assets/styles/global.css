@@ -18,7 +18,7 @@ button > a:hover{ color: #fff; }
 /* menu */
 .menu{
   position: fixed; top: 16px; left: 16px;
-  height: 74px;
+  height: 74px; width: 74px;
   font-size: 48px;
 }
 .menu:hover div.menu-btn{
@@ -63,6 +63,16 @@ button > a:hover{ color: #fff; }
 }
 .menu > ul.dropdown > li > a:last-child{
   font-size: 14px;
+}
+.menu > .greeting{
+  display: none;
+  position: absolute; top: 32px; left: 74px; transform: translateY(-50%);
+  padding: 4px 8px;
+  background-color: #fff;
+  font-size: 16px; word-break: keep-all;
+}
+.menu:hover .greeting{
+  display: block;
 }
 
 

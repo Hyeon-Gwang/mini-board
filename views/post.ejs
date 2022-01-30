@@ -38,6 +38,11 @@
         <li><a href="/signup">회원가입</a></li>
       <% } %>
     </ul>
+    <% if(typeof user !== "undefined") { %>
+      <div class="greeting">
+        <%= user.nickname %>님,&nbsp;안녕하세요?
+      </div>
+    <% } %>
   </div>
   
   <!-- 제목 -->
