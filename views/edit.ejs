@@ -71,7 +71,6 @@
 
       $titleInput.value = post.title;
       $writerInput.value = post.writer;
-      // xss 테스트 땜에 setHTML로 해놓음.
       editor.setHTML(post.content);
     };
     loadPostData();
