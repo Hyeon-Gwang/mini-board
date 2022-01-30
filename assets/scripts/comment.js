@@ -40,7 +40,12 @@ function ceateEditInput(e) {
   const $commentBox = document.querySelector(`#commentBox-${COMMENT_ID}`);
   const $commentDiv = document.querySelector(`#commentBox-${COMMENT_ID} > #comment`);
   
-  const $commentEditInput = `<input type='text' value="${$commentDiv.innerText}" onkeyup="editComment(event)" />`
+  const $commentEditInput = `
+    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 4px;">
+      <input type='text' value="${$commentDiv.innerText}" onkeyup="editComment(event)" style="width: 95%;" />
+      <button onclick="window.location.reload();" class="btn btn-outline-danger btn-sm">취소</button>
+    </div>
+  `
   const position = "beforeend"
   
   $commentBox.removeChild($commentDiv);
