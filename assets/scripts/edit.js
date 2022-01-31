@@ -20,7 +20,7 @@ async function editPost() {
   if(passwordCheck.data.result === "success") {
     const result = await axios.patch(`/api/post/${postId}`, { title, content, writer });
     if(result.data.result === "success") {
-      window.location.href = `/post?postId=${postId}`
+      window.location.href = `/post?id=${postId}`
     };
   };
 };

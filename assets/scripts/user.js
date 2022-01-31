@@ -9,7 +9,7 @@ if($logoutBtn) {
 // 유저 정보 불러오기
 let user = {}
 async function getUserInfo() {
-  const result = await axios.get("/api/user");
+  const result = await axios.get("/api/auth");
   user = result.data.user;
 }
 

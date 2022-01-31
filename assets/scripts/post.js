@@ -19,7 +19,7 @@ $searchInput.addEventListener("keyup", editPost)
 function movePostPage(e) {
   const postId = e.target.dataset.id;
   
-  window.location.href = `/post?postId=${postId}`;
+  window.location.href = `/post?id=${postId}`;
 };
 $postRows.forEach(postRow => {
   postRow.addEventListener("click", movePostPage);

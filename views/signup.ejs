@@ -77,7 +77,7 @@
         if(password.includes(nickname)) { return alert("비밀번호에는 닉네임을 포함하면 안됩니다."); };
         if(password !== passwordCheck) { return alert("비밀번호가 일치하지 않습니다."); };
 
-        const result = await axios.post("/api/user/new", {
+        const result = await axios.post("/api/auth/new", {
           email, nickname, password
         });
         if(result.data.result === "success") { window.location.href = "/login"; };

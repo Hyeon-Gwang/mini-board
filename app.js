@@ -6,7 +6,8 @@ const app = express();
 // middlewares
 const auth = require("./middlewares/auth");
 
-const apiRouter = require("./routes/api");
+const postRouter = require("./routes/post");
+const authRouter = require("./routes/auth");
 
 // EJS setting
 app.set("view engine", "ejs");
@@ -128,10 +129,10 @@ app.get("/edit", auth, (req, res) => {
   return res.render("edit");
 });
 
-// /post?postId=4
+// /post?id=4
 app.get("/post", auth, async (req, res) => {
   try {
-    const id = req.query.postId;
+    const id = req.query.id;
     const post = await Posts.findOne({ id: id }).exec();
 
     const comments = await Comments.find({ postId: post.id })
@@ -148,7 +149,8 @@ app.get("/post", auth, async (req, res) => {
 });
 
 // APIs
-app.use("/api", apiRouter);
+app.use("/api/post", postRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(3000, () => {
   console.log("Mini-board server is running!!");

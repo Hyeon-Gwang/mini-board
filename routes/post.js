@@ -3,8 +3,6 @@ const router = express.Router();
 
 const auth = require("../middlewares/auth");
 
-const jwt = require("jsonwebtoken");
-
 const sanitizeHTML = require("sanitize-html");
 function sanitize(text) {
   return sanitizeHTML(text, {
@@ -23,65 +21,11 @@ function sanitize(text) {
   })
 }
 
-const Users = require("../models/user");
 const Posts = require("../models/post");
 const Comments = require("../models/comment");
 
-// 회원가입 POST /api/user/new
-router.post("/user/new", async (req, res, next) => {
-  try {
-    const { email, nickname, password } = req.body;
-
-    const isExist = await Users.findOne({
-      $or: [{ email }, { nickname }],
-    });
-    if(isExist) {
-      return res.status(400).send();
-    };
-
-    // Users에 user 저장
-    const user = new Users({ email, nickname, password });
-    await user.save();
-
-    return res.status(201).send({ result: "success" });
-  } catch(error) {
-    console.error(error);
-    next(error);
-  };
-});
-
-// 로그인 POST /api/auth
-router.post("/auth", async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await Users.findOne({ email });
-
-  if(!user || password !== user.password) {
-    return res.send({ result: "fail", message: "이메일 또는 패스워드가 맞지 않습니다." });
-  }
-
-  const token = jwt.sign({ email }, "Mini-Board-secret-key");
-
-  res.cookie("MiniBoard", token, { path: "/", httpOnly: true, sameSite: "lax" });
-  return res.status(200).send({
-    result: "success",
-  });
-});
-
-// 로그아웃 DELETE /api/auth
-router.delete("/auth", (req, res) => {
-  res.clearCookie("MiniBoard");
-  return res.status(200).send({ result: "success" });
-});
-
-// 사용자 정보 가져오기
-router.get("/user", auth, (req, res) => {
-  const user = res.locals.user;
-  return res.status(200).send({ user });
-});
-
 // 새 포스트 작성 POST /api/post/new
-router.post("/post/new", async (req, res, next) => {
+router.post("/new", async (req, res, next) => {
   try {
     const { title, content, writer, password, date } = req.body;
 
@@ -107,7 +51,7 @@ router.post("/post/new", async (req, res, next) => {
     });
     await newPost.save();
 
-    return res.status(201).send({ result: "success" });
+    return res.status(201).send({ result: "success", postId: id });
   } catch(error) {
     console.error(error);
     next(error);
@@ -115,7 +59,7 @@ router.post("/post/new", async (req, res, next) => {
 });
 
 // 포스트 정보 불러오기
-router.get("/post/:postId", async (req, res) => {
+router.get("/:postId", async (req, res, next) => {
   try {
     const id = req.params.postId;
 
@@ -128,7 +72,7 @@ router.get("/post/:postId", async (req, res) => {
 });
 
 // 포스트 수정 PATCH /api/post/43
-router.patch("/post/:postId", async (req, res, next) => {
+router.patch("/:postId", async (req, res, next) => {
   try {
     const id = req.params.postId;
     const { title, writer, content } = req.body
@@ -145,11 +89,15 @@ router.patch("/post/:postId", async (req, res, next) => {
 });
 
 // 포스트 삭제 DELETE /api/post/43
-router.delete("/post/:postId", async (req, res, next) => {
+router.delete("/:postId", async (req, res, next) => {
   try {
     const id = req.params.postId;
 
+    // 포스트 삭제
     await Posts.findOneAndDelete({ id: id });
+
+    // 포스트의 댓글 삭제
+    await Comments.deleteMany({ postId: id });
     return res.status(200).send({ result: "success" });
   } catch(error) {
     console.error(error);
@@ -158,7 +106,7 @@ router.delete("/post/:postId", async (req, res, next) => {
 });
 
 // 포스트 비밀번호 확인 GET /api/post/1/password/1234
-router.get("/post/:postId/password/:password", async (req, res, next) => {
+router.get("/:postId/password/:password", async (req, res, next) => {
   try {
     const { postId, password } = req.params;
     const post = await Posts.findOne({ id: postId });
@@ -175,7 +123,7 @@ router.get("/post/:postId/password/:password", async (req, res, next) => {
 });
 
 // 댓글 작성 POST /api/post/1/comment/new
-router.post("/post/:postId/comment", auth, async (req, res, next) => {
+router.post("/:postId/comment", auth, async (req, res, next) => {
   try {
     const user = res.locals.user;
     if(!user) {
@@ -208,7 +156,7 @@ router.post("/post/:postId/comment", auth, async (req, res, next) => {
 });
 
 // 댓글 수정 PATCH /api/post/1/comment/3
-router.patch("/post/:postId/comment/:commentId", async (req, res, next) => {
+router.patch("/:postId/comment/:commentId", async (req, res, next) => {
   try {
     const commentId = req.params.commentId;
     const { comment } = req.body
@@ -225,7 +173,7 @@ router.patch("/post/:postId/comment/:commentId", async (req, res, next) => {
 });
 
 // 댓글 삭제 DELETE /api/post/1/comment
-router.delete("/post/:postId/comment/:commentId", async (req, res, next) => {
+router.delete("/:postId/comment/:commentId", async (req, res, next) => {
   try {
     const { commentId } = req.params;
     
