@@ -2,7 +2,8 @@
   "name": "mini-board",
   "version": "0.1.0",
   "scripts": {
-    "dev": "nodemon app"
+    "dev": "nodemon app",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -13,5 +14,8 @@
     "mongoose": "^6.1.7",
     "nodemon": "^2.0.15",
     "sanitize-html": "^2.6.1"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
   }
 }
