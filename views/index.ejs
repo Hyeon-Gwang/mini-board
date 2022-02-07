@@ -64,10 +64,11 @@
       <table class="table table-hover">
         <thead class="table-light">
           <tr>
-            <td style="width: 10%">번호</td>
-            <td style="width: 60%">제목</td>
-            <td style="width: 15%">작성자</td>
-            <td style="width: 15%">작성일</td>
+            <td style="width: 5%">번호</td>
+            <td style="width: 63%">제목</td>
+            <td style="width: 10%">작성자</td>
+            <td style="width: 10%">조회수</td>
+            <td style="width: 12%">작성일</td>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +77,7 @@
               <td data-id="<%= posts[i].id %>"><%= posts[i].id %></td>
               <td data-id="<%= posts[i].id %>"><%= posts[i].title %></td>
               <td data-id="<%= posts[i].id %>"><%= posts[i].writer %></td>
+              <td data-id="<%= posts[i].id %>"><%= posts[i].views %></td>
               <td data-id="<%= posts[i].id %>">
                 <%= String(posts[i].createdAt).slice(0, 4) %>-<%= String(posts[i].createdAt).slice(4, 6) %>-<%= String(posts[i].createdAt).slice(6, 8) %>
               </td>

@@ -35,7 +35,7 @@ async function editComment(e) {
   };
 };
 
-function ceateEditInput(e) {
+function createEditInput(e) {
   COMMENT_ID = e.target.dataset.id;
   const $commentBox = document.querySelector(`#commentBox-${COMMENT_ID}`);
   const $commentDiv = document.querySelector(`#commentBox-${COMMENT_ID} > #comment`);
@@ -53,7 +53,7 @@ function ceateEditInput(e) {
 }
 if($commentEditBtns) {
   $commentEditBtns.forEach(editBtn => {
-    editBtn.addEventListener("click", ceateEditInput);
+    editBtn.addEventListener("click", createEditInput);
   });
 };
 

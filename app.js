@@ -133,7 +133,12 @@ app.get("/edit", auth, (req, res) => {
 app.get("/post", auth, async (req, res) => {
   try {
     const id = req.query.id;
-    const post = await Posts.findOne({ id: id }).exec();
+    const post = await Posts.findOneAndUpdate(
+      { id: id },
+      { "$inc": { "views": 1 } },
+      { new: true, }
+    );
+    // const post = await Posts.findOne({ id: id }).exec();
 
     const comments = await Comments.find({ postId: post.id })
       .sort("-createdAt")

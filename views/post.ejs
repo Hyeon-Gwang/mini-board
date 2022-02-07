@@ -53,7 +53,13 @@
   <div class="box shadow space-between">
     <div>
       <h1 class="post-title" style="padding-bottom: 12px; margin-bottom: 0; border-bottom: 1px solid #2d2d2d;">
-        <%= post.title %>
+        <div>
+          <%= post.title %>
+        </div>
+        <div style="margin-top: 4px; font-size: 16px;">
+          <span>작성자 : <%= post.writer %></span>
+          <span>조회수 : <%= post.views %></span>
+        </div>
       </h1>
       <!-- TUI Viewer componenet -->
       <div id="viewer"></div>

@@ -6,6 +6,10 @@ const PostSchema = new mongoose.Schema({
   content: String,
   writer: String,
   password: String,
+  views: {
+    type: Number,
+    default: 0,
+  },
   createdAt: String,
 });
 
